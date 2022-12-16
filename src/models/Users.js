@@ -8,23 +8,30 @@ export const Users=sequelize.define('users', {
         autoIncrement: true
     },
     username: {
-        type: DataTypes.TEXT
+        type: DataTypes.TEXT,
+        unique: true
     },
     password: {
         type: DataTypes.TEXT
     },
     email: {
-        type: DataTypes.TEXT
+        type: DataTypes.TEXT,
+        unique: true
     },
     role: {
-        type: DataTypes.TEXT
+        type: DataTypes.TEXT,
+        defaultValue: 'user'
     },
     token: {
         type: DataTypes.TEXT
     },
+    token_type: {
+        type: DataTypes.TEXT
+    }, 
     token_type:{
         type: DataTypes.TEXT
     }   
 }, {
     timestamps: false
 });
+

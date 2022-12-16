@@ -33,8 +33,7 @@ export const login = async (req, res) => {
         );
         console.log(token);
         Users.update(
-          { token ,
-        },
+          { token ,token_type: 'Bearer'},
           {
             where: {
               id: user.id,
@@ -58,7 +57,7 @@ export const register = async (req, res) => {
         email,
         role
     }).then((user) => {
-        const token = jwt.sign({id: user.id, username: user.username}, 'secretkey', {
+        const token = jwt.sign({id: user.id, username: user.username,role:user.role}, 'secretkey', {
             expiresIn: 60 * 60 * 24
         } 
         );
@@ -70,14 +69,23 @@ export const register = async (req, res) => {
             }
         })
         res.status(200).send({token,
+            token_type: 'Bearer',
             message: 'User created successfully'  
         })
         
     }).catch((err) => {
-        console.error(err);
+     if(err.name==='SequelizeUniqueConstraintError'){
+          res.status(500).json({
+              message: 'Username or email already exists',
+              data: {}
+          });
+      }else{
+      console.error(err);
         res.status(500).json({
         message: 'Something goes wrong',
         data: {}
+      
     });
+  }
     })
 }
