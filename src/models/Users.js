@@ -22,7 +22,9 @@ export const Users=sequelize.define('users', {
     token: {
         type: DataTypes.TEXT
     },
-       
+    token_type: {
+        type: DataTypes.TEXT
+    }, 
 }, {
     timestamps: false
 });

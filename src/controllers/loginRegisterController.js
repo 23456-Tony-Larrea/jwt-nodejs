@@ -32,7 +32,7 @@ export const login = async (req, res) => {
         );
   
         Users.update(
-          { token },
+          { token ,token_type: 'Bearer'},
           {
             where: {
               id: user.id,
@@ -56,7 +56,7 @@ export const register = async (req, res) => {
         email,
         role
     }).then((user) => {
-        const token = jwt.sign({id: user.id, username: user.username}, 'secretkey', {
+        const token = jwt.sign({id: user.id, username: user.username,role:user.role}, 'secretkey', {
             expiresIn: 60 * 60 * 24
         } 
         );
@@ -66,6 +66,7 @@ export const register = async (req, res) => {
             }
         })
         res.status(200).send({token,
+            token_type: 'Bearer',
             message: 'User created successfully'  
         })
     }).catch((err) => {
