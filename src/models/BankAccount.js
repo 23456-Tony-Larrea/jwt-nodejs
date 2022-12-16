@@ -31,7 +31,7 @@ export const BankAccount = sequelize.define('bank_account', {
     timestamps: false
 });
 
-Users.hasMany(BankAccount, { foreignKey: 'user_id' });
-BankAccount.belongsTo(Users, { foreignKey: 'user_id' });
+Users.hasMany(BankAccount, { foreignKey: 'id_user' });
+BankAccount.belongsTo(Users, { foreignKey: 'id_user' });
 Tickets.hasMany(BankAccount, { foreignKey: 'id_tiket' });
 BankAccount.belongsTo(Tickets, { foreignKey: 'id_tiket' });

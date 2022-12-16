@@ -27,30 +27,98 @@ export const getBankAccountById = async (req, res) => {
     }
     }
 
-export const createBankAccount = async (req, res) => {
-    const {id_user,id_tiket,account_number,account_type,type_balance,evidence} = req.body;
-    try {
-        let newBankAccount = await BankAccount.create({
-        id_user,
-        id_tiket,
-        account_number,
-        account_type,
-        type_balance,
-        evidence,
-        },{
-        fields: ["id_user","id_tiket","account_number","account_type","type_balance","evidence"]
-        });
-        if (newBankAccount) {
-        return res.json({
-            message: "BankAccount created successfully",
-            data: newBankAccount,
-        });
+    export const createBankAccount = async (req, res) => {
+        const { id_user, id_tiket, account_number, account_type, type_balance, evidence } = req.body;
+      
+        if (!id_user || !id_tiket) {
+          return res.status(400).json({
+            message: "Missing required data",
+          });
         }
-    } catch (e) {
+      
+        try {
+          let newBankAccount = await BankAccount.create({
+            id_user,
+            id_tiket,
+            account_number,
+            account_type,
+            type_balance,
+            evidence,
+          },{
+            fields: ["id_user","id_tiket","account_number","account_type","type_balance","evidence"]
+          });
+      
+          if (newBankAccount) {
+            return res.json({
+              message: "BankAccount created successfully",
+              data: newBankAccount,
+            });
+          }
+        } catch (e) {
+          console.log("the error is: ", e);
+          res.status(500).json({
+            message: "Something goes wrong",
+            data: {},
+            });
+        }
+}
+export const updateBankAccount = async (req, res) => {
+    const { id } = req.params;
+    const {id_user, id_tiket, account_number, account_type, type_balance, evidence } = req.body;
+  
+    try {
+      const user = await Users.findOne({
+        where: {
+          id: id_user,
+        },
+      });
+  
+      if (!user) {
+        return res.status(404).json({
+          message: "User not found",
+        });
+      }
+  
+      const ticket = await Tickets.findOne({
+        where: {
+          id: id_tiket,
+        },
+      });
+     
+      if (!ticket) {
+        return res.status(404).json({
+          message: "Ticket not found",
+        });
+      }
+  
+      const bankAccounts = await BankAccount.findAll({
+        attributes: ["id_user","id_tiket","account_number","account_type","type_balance","evidence"],
+        where: {
+            id,
+          },
+        });
+    
+        if (bankAccounts.length > 0) {
+          bankAccounts.forEach(async (bankAccount) => {
+            await bankAccount.update({
+              id_user,
+              id_tiket,
+              account_number,
+              account_type,
+              type_balance,
+              evidence,
+            });
+          });
+        }
+            return res.json({
+          message: "BankAccount updated successfully",
+          data: bankAccounts,
+        });
+      } catch (e) {
         console.log("the error is: ", e);
         res.status(500).json({
-        message: "Something goes wrong",
-        data: {},
+          message: "Something goes wrong",
+          data: {},
         });
-    }
+      }
 }

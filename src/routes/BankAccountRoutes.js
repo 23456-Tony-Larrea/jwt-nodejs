@@ -1,7 +1,8 @@
 import { Router } from "express";
-import {getBankAccount,createBankAccount} from "../controllers/BankAccountController.js";
+import {getBankAccount,createBankAccount,getBankAccountById,updateBankAccount} from "../controllers/BankAccountController.js";
 const router = Router();
 router.get("/bankAccount",getBankAccount)
 router.post("/bankAccount", createBankAccount)
-
+router.get("/bankAccount/:id",getBankAccountById)
+router.put("/bankAccount/:id",updateBankAccount)
 export default router;

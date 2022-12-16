@@ -4,7 +4,7 @@ import './models/Users.js';
 
 async function main() {
     try{
-    await sequelize.sync({force: true});
+    await sequelize.sync({force: false});
     console.log('Database is connected');
     await app.listen(3000);
     console.log('Server on port 3000');
