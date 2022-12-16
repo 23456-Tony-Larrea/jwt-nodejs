@@ -8,8 +8,9 @@ export const login = async (req, res) => {
   
     Users.findOne({
       where: {
-        username,
+        username
       },
+      
     })
       .then((user) => {
         if (!user) {
@@ -30,16 +31,17 @@ export const login = async (req, res) => {
             expiresIn: 60 * 60 * 24,
           }
         );
-  
+        console.log(token);
         Users.update(
-          { token },
+          { token ,
+        },
           {
             where: {
               id: user.id,
             },
           }
         );
-        res.status(200).send({ token });
+    res.status(200).send({ token });
       })
       .catch((err) => {
         console.error(err);
@@ -60,7 +62,9 @@ export const register = async (req, res) => {
             expiresIn: 60 * 60 * 24
         } 
         );
-        Users.update({token}, {
+        Users.update({token,
+        token_type: 'Bearer'
+        }, {
             where: {
                 id: user.id
             }
@@ -68,6 +72,7 @@ export const register = async (req, res) => {
         res.status(200).send({token,
             message: 'User created successfully'  
         })
+        
     }).catch((err) => {
         console.error(err);
         res.status(500).json({
