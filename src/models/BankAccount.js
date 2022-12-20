@@ -15,18 +15,10 @@ export const BankAccount = sequelize.define('bank_account', {
     id_tiket: {
         type: DataTypes.INTEGER
     },
-    account_number: {
-        type: DataTypes.STRING
-    },
-    account_type: {
-        type: DataTypes.STRING
-    },
-    type_balance: {
-        type: DataTypes.FLOAT
-    },
     evidence: {
         type: DataTypes.STRING
     },
+    
    }, {
     timestamps: false
 });

@@ -13,6 +13,16 @@ export const Tickets = sequelize.define('tickets', {
     state_ticket: {
         type: DataTypes.STRING
     },
+    minTicket: {
+        type: DataTypes.INTEGER
+    },
+    maxTicket: {
+        type: DataTypes.INTEGER
+    },
+    dateTicketSold: {
+        type: DataTypes.DATEONLY,
+        dateFomat: 'dd/mm/yyyy'
+},
 }, {
     timestamps: false
 });

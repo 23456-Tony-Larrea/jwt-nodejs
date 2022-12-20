@@ -28,25 +28,46 @@ export const getBankAccountById = async (req, res) => {
     }
 
     export const createBankAccount = async (req, res) => {
-        const { id_user, id_tiket, account_number, account_type, type_balance, evidence } = req.body;
-      
-        if (!id_user || !id_tiket) {
-          return res.status(400).json({
-            message: "Missing required data",
-          });
-        }
-      
+      const {id_user, id_tiket, evidence } = req.body;
+       if(!id_user || !id_tiket){
+        return res.status(500).json({
+          message: "Missing data",
+        });
+      }
+      const user = await Users.findOne({
+        where: {
+          id: id_user,
+        },
+      });
+      if (!user) {
+        return res.status(500).json({
+          message: "User not found",
+        });
+      }
+      const ticket = await Tickets.findOne({
+        where: {
+          id: id_tiket,
+        },
+      });
+      if (!ticket) {
+        return res.status(500).json({
+          message: "Ticket not found",
+        });
+      }
+      if(!user && !ticket){
+        return res.status(500).json({
+          message: "User and Ticket not found",
+        });
+      }
         try {
           let newBankAccount = await BankAccount.create({
             id_user,
             id_tiket,
-            account_number,
-            account_type,
-            type_balance,
             evidence,
           },{
             fields: ["id_user","id_tiket","account_number","account_type","type_balance","evidence"]
           });
+          
       
           if (newBankAccount) {
             return res.json({
@@ -67,6 +88,7 @@ export const updateBankAccount = async (req, res) => {
     const {id_user, id_tiket, account_number, account_type, type_balance, evidence } = req.body;
   
     try {
+    
       const user = await Users.findOne({
         where: {
           id: id_user,

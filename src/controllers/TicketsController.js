@@ -74,15 +74,18 @@ export const deleteTicket = async (req, res) => {
     }
 
 export const createTicket = async (req, res) => {
-    const { numberTikets, state_ticket } = req.body;
+    const {numberTikets, state_ticket,minTickets,maxTickets,dateTicketSold} = req.body;
     try {
         let newTicket = await Tickets.create(
         {
             numberTikets,
             state_ticket,
+            minTickets,
+            maxTickets,
+            dateTicketSold
         },
         {
-            fields: ["numberTikets", "state_ticket"],
+            fields: ["numberTikets", "state_ticket","minTickets","maxTickets","dateTicketSold"],
         }
         );
         if (newTicket) {
@@ -91,11 +94,12 @@ export const createTicket = async (req, res) => {
             data: newTicket,
         });
         }
-    } catch (e) {
+    }
+    catch (e) {
         console.log("the error is: ", e);
         res.status(500).json({
         message: "Something goes wrong",
         data: {},
         });
     }
-    };
+    }
