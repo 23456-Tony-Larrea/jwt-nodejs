@@ -16,7 +16,7 @@ const createDir = (dir) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const dir = path.join(process.cwd(), 'public/uploads');
+    const dir = path.join(process.cwd(), '/src/public/uploads/');
     createDir(dir).then(() => {
       // Dir has been created or it already exists
       cb(null, dir);
