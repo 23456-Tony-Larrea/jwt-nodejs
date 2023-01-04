@@ -1,5 +1,6 @@
 import { Tickets } from "../models/Tickets.js";
 
+
 export const getTickets = async (req, res) => {
     try {
         const tickets = await Tickets.findAll();
@@ -73,33 +74,52 @@ export const deleteTicket = async (req, res) => {
     }
     }
 
-export const createTicket = async (req, res) => {
-    const {numberTikets, state_ticket,minTickets,maxTickets,dateTicketSold} = req.body;
-    try {
-        let newTicket = await Tickets.create(
-        {
-            numberTikets,
-            state_ticket,
-            minTickets,
-            maxTickets,
-            dateTicketSold
-        },
-        {
-            fields: ["numberTikets", "state_ticket","minTickets","maxTickets","dateTicketSold"],
+    export const createTicket = async (req, res) => {
+        const { numberTikets, state_ticket, minTicket, maxTicket, dateTicketSold ,tickets_Stock,price} = req.body;
+        try {
+          let newTicket = await Tickets.create(
+            {
+              numberTikets,
+              state_ticket,
+              minTicket,
+              maxTicket,
+              dateTicketSold,
+              tickets_Stock,
+              price: price || 0.00
+            },
+            {
+              fields: ['numberTikets', 'state_ticket', 'minTicket', 'maxTicket', 'dateTicketSold','tickets_Stock'],
+              validate: {
+                isValidStatus: function (value) {
+                  const statuses = ['Vendido', 'Disponible', 'Reservado'];
+                  if(!statuses.includes(value)) {
+                    throw new Error('El estado del ticket no es válido');
+                  }
+                },
+                isMinTicketLessThanMaxTicket: function(value) {
+                  if (value > this.maxTicket) {
+                    throw new Error('minTicket debe ser menor o igual a maxTicket');
+                  }
+                },
+                isMaxTicketGreaterThanMinTicket: function(value) {
+                  if (value < this.minTicket) {
+                    throw new Error('maxTicket debe ser mayor o igual a minTicket');
+                  }
+                },
+            }
         }
-        );
-        if (newTicket) {
-        return res.json({
-            message: "Ticket created successfully",
-            data: newTicket,
-        });
+          );
+          if (newTicket) {
+            return res.json({
+              message: 'Ticket created successfully',
+              data: newTicket
+            });
+          }
+        } catch (error) {
+          console.log('the error is: ', error);
+          res.status(500).json({
+            message: 'Something goes wrong',
+            data: {}
+          });
         }
-    }
-    catch (e) {
-        console.log("the error is: ", e);
-        res.status(500).json({
-        message: "Something goes wrong",
-        data: {},
-        });
-    }
-    }
+      };

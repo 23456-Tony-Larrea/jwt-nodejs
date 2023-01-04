@@ -19,6 +19,7 @@ export const BankAccount = sequelize.define('bank_account', {
         type: DataTypes.STRING
     },
     
+    
    }, {
     timestamps: false
 });
