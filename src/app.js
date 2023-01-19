@@ -4,6 +4,8 @@ import LoginRegisterRoutes from './routes/LoginRegisterRoutes.js'
 import TiketsRoutes from './routes/TiketsRoutes.js';
 import BankAccountRoutes from './routes/BankAccountRoutes.js';
 import cors from 'cors';
+import TicketSoldRoutes from './routes/TicketSoldRoute.js';
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -11,4 +13,5 @@ app.use(UserRoutes);
 app.use(LoginRegisterRoutes);
 app.use(TiketsRoutes);
 app.use(BankAccountRoutes);
+app.use(TicketSoldRoutes);
 export default app;
