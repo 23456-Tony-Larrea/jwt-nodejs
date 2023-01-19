@@ -1,12 +1,12 @@
 import  Sequelize  from 'sequelize';
 
 export const sequelize = new Sequelize(
-    'roles',
-    'postgres',
-    '123456',
+    'users',
+    'root',
+    '',
     {
     host: 'localhost',
-    dialect: 'postgres',
+    dialect: 'mysql',
 
 });
 
