@@ -3,8 +3,9 @@ import UserRoutes from './routes/UserRoutes.js';
 import LoginRegisterRoutes from './routes/LoginRegisterRoutes.js'
 import TiketsRoutes from './routes/TiketsRoutes.js';
 import BankAccountRoutes from './routes/BankAccountRoutes.js';
-
+import cors from 'cors';
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(UserRoutes);
 app.use(LoginRegisterRoutes);
