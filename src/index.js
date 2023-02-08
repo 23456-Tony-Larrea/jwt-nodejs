@@ -12,4 +12,5 @@ async function main() {
         console.log("the error is: ", e);
     }
 }
+
 main();

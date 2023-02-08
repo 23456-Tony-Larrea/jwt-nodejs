@@ -3,8 +3,8 @@ import {getUser,getUserById,updateUser,deleteUser} from "../controllers/UserCont
 import {verifyToken,verifyRole} from "../middleware/middleware.js";
 const router = Router();
 
-router.get("/users",verifyToken,getUser)
-router.get("/users/:id",getUserById)
+router.get("/users",getUser)
+router.get("/users/:id",verifyToken,getUserById)
 router.put("/users/:id",verifyToken,verifyRole, updateUser)
 router.delete("/users/:id",verifyToken,verifyRole, deleteUser)
 export default router;
