@@ -1,6 +1,10 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Card, CardContent, Typography, TextField, Button } from '@material-ui/core';
+import axios from '../axios/axios'
+import Swal from 'sweetalert2';
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,14 +43,47 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 const LoginPage = () => {
   const classes = useStyles();
   const [activeTab, setActiveTab] = React.useState('login');
-
+  const [username,setUsername]=useState('')
+  const [password,setPassword]=useState('')
+ 
+  const submitLogin=()=>{
+    console.log(username)
+    console.log(password)
+    axios.post('/login',{
+      username:username,
+      password:password
+    })
+    .then(res=>{
+      console.log(res)
+      Swal.fire({
+        icon: 'success',
+        title: 'Inicio de Sesión Exitoso',
+        text: 'Bienvenido',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    })
+    .catch(err=>{
+      console.log(err)
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Usuario o Contraseña Incorrecta',
+        showConfirmButton: false,
+        timer: 1500
+      })
+  }
+    )
+  }
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
+  
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12} sm={8} md={4}>
@@ -58,7 +95,10 @@ const LoginPage = () => {
             variant="subtitle2"
             component="h3"
             className={`${classes.tab} ${activeTab === 'login' ? classes.activeTab : ''}`}
-            onClick={() => handleTabChange('login')}
+           onClick={(e) => {
+              handleTabChange('login');
+              
+            }}
           >
             Inicio de Sesión
           </Typography>
@@ -71,18 +111,19 @@ const LoginPage = () => {
             Registro
           </Typography>
           <CardContent>
-            <form className={classes.form}>
+            <form className={classes.form} >
               {activeTab === 'login' && (
 <TextField
                variant="outlined"
                margin="normal"
                required
                fullWidth
-               id="email"
-               label="Correo Electrónico"
-               name="email"
-               autoComplete="email"
+               id="username"
+               label="Nombre Usuario"
+               name="username"
+               autoComplete="username"
                autoFocus
+               onChange={e => setUsername(e.target.value)}
              />
 )}
 {activeTab === 'login' && (
@@ -96,6 +137,7 @@ const LoginPage = () => {
                type="password"
                id="password"
                autoComplete="current-password"
+               onChange={e => setPassword(e.target.value)}
              />
 )}
 {activeTab === 'register' && (
@@ -115,10 +157,10 @@ const LoginPage = () => {
                  margin="normal"
                  required
                  fullWidth
-                 id="email"
-                 label="Correo Electrónico"
-                 name="email"
-                 autoComplete="email"
+                 id="username"
+                 label="Nombre del usuario"
+                 name="username"
+                 autoComplete="username"
                />
 <TextField
                  variant="outlined"
@@ -134,13 +176,14 @@ const LoginPage = () => {
 </>
 )}
 <Button
-             type="submit"
+             
              fullWidth
              variant="contained"
              color="primary"
              className={classes.submit}
+             onClick={submitLogin}
            >
-{activeTab === 'login' ? 'Iniciar Sesión' : 'Registrarse'}
+              {activeTab === 'login' ? 'Iniciar Sesión' : 'Registrarse'}
 </Button>
 </form>
 </CardContent>
