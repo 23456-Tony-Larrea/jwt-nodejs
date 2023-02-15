@@ -9,8 +9,8 @@ export const TicketSold = sequelize.define('ticket_sold', {
         primaryKey: true,
         autoIncrement: true
     },
-    id_user: {
-        type: DataTypes.INTEGER
+    name_user: {
+        type: DataTypes.STRING
     },
     id_ticket: {
         type: DataTypes.INTEGER
@@ -21,13 +21,17 @@ export const TicketSold = sequelize.define('ticket_sold', {
     image: {
         type: DataTypes.STRING
     },
-    
+    numTransaction:{
+        type: DataTypes.STRING
+    },
+     state_ticket: {
+  type: DataTypes.BOOLEAN,
+  defaultValue: false
+} 
    }, {
     timestamps: false
 });
 
-Users.hasMany(TicketSold, { foreignKey: 'id_user' });
-TicketSold.belongsTo(Users, { foreignKey: 'id_user' });
 Tickets.hasMany(TicketSold, { foreignKey: 'id_ticket' });
 TicketSold.belongsTo(Tickets, { foreignKey: 'id_ticket' });
 

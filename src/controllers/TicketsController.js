@@ -88,7 +88,7 @@ export const deleteTicket = async (req, res) => {
               price: price || 0.00
             },
             {
-              fields: ['numberTikets', 'state_ticket', 'minTicket', 'maxTicket', 'dateTicketSold','tickets_Stock'],
+              fields: ['numberTikets', 'state_ticket', 'minTicket', 'maxTicket', 'dateTicketSold','tickets_Stock','price'],
               validate: {
                 isValidStatus: function (value) {
                   const statuses = ['Vendido', 'Disponible', 'Reservado'];
