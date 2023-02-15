@@ -2,7 +2,8 @@ import React,{useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Card, CardContent, Typography, TextField, Button } from '@material-ui/core';
 import axios from '../axios/axios'
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'; 
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -45,11 +46,15 @@ const useStyles = makeStyles((theme) => ({
 
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const classes = useStyles();
   const [activeTab, setActiveTab] = React.useState('login');
   const [username,setUsername]=useState('')
   const [password,setPassword]=useState('')
- 
+  const [email,setEmail]=useState('')
+  const [usernameRegister,setUsernameRegister]=useState('')
+  const [passwordRegister,setPasswordRegister]=useState('')
+
   const submitLogin=()=>{
     console.log(username)
     console.log(password)
@@ -66,9 +71,11 @@ const LoginPage = () => {
         showConfirmButton: false,
         timer: 1500
       })
+      navigate("/users");
     })
     .catch(err=>{
       console.log(err)
+      
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -79,6 +86,42 @@ const LoginPage = () => {
   }
     )
   }
+
+  const submitRegister=()=>{
+    console.log(username)
+    console.log(password)
+    console.log(email)
+    axios.post('/register',{
+      username:username,
+      password:password,
+      email:email
+    })
+    .then(res=>{
+      console.log(res)
+      Swal.fire({
+        icon: 'success',
+        title: 'Registro Exitoso',
+        text: 'Bienvenido',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      navigate("/users");
+    }
+    )
+    .catch(err=>{
+      console.log(err)
+      
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Usuario o Contraseña Incorrecta',
+        showConfirmButton: false,
+        timer: 1500
+      })
+  }
+    )
+  }
+
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -151,6 +194,7 @@ const LoginPage = () => {
                  label="Nombre"
                  name="name"
                  autoFocus
+                  value={usernameRegister}
                />
 <TextField
                  variant="outlined"
@@ -158,9 +202,10 @@ const LoginPage = () => {
                  required
                  fullWidth
                  id="username"
-                 label="Nombre del usuario"
-                 name="username"
+                 label="email del usuario"
+                 name="email"
                  autoComplete="username"
+                value={email}
                />
 <TextField
                  variant="outlined"
@@ -172,6 +217,7 @@ const LoginPage = () => {
                  type="password"
                  id="password"
                  autoComplete="new-password"
+                  value={passwordRegister}
                />
 </>
 )}
